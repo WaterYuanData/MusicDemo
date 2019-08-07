@@ -2,7 +2,11 @@ package com.aaa.musicdemo.music;
 
 import android.util.Log;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
 import io.reactivex.Observable;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -27,10 +31,19 @@ public class MusicHttpsUtil {
     }
 
     private MusicHttpsUtil() {
+        // https://blog.csdn.net/willhanweijia/article/details/69942039
+        OkHttpClient mOkHttpClient = new OkHttpClient().newBuilder()
+                .hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL1) // HTTP 403 Forbidden
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(mOkHttpClient)
                 .build();
     }
 
