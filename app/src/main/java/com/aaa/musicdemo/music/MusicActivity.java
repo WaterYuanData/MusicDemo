@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.aaa.musicdemo.R;
 import com.aaa.musicdemo.databinding.ActivityMusicBinding;
@@ -23,5 +24,11 @@ public class MusicActivity extends AppCompatActivity {
         mMusicDataViewModel = ViewModelProviders.of(this).get(MusicDataViewModel.class);
         Log.i(TAG, "onCreate: ");
         mMusicDataViewModel.loadMusicData();
+
+        mMusicDataViewModel.doPlay();
+    }
+
+    public void doStop(View view) {
+        mMusicDataViewModel.doPause();
     }
 }
