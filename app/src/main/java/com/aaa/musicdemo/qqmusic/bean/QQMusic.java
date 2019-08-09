@@ -29,7 +29,7 @@ public class QQMusic {
         return this.message;
     }
 
-    static class Data {
+    public static class Data {
         private Song song;
 
         public void setSong(Song song) {
@@ -41,7 +41,7 @@ public class QQMusic {
         }
     }
 
-    static class Song {
+    public static class Song {
         private java.util.List<List> list;
 
         public void setList(java.util.List<List> list) {
@@ -54,7 +54,7 @@ public class QQMusic {
     }
 
 
-    static class List {
+    public static class List {
         private java.util.List<Singer> singer;
         private String songmid;
         private String songname;
@@ -85,7 +85,7 @@ public class QQMusic {
         }
     }
 
-    static class Singer {
+    public static class Singer {
         private String name;
 
         public void setName(String name) {

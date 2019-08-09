@@ -4,11 +4,14 @@ import android.util.Log;
 
 import com.aaa.musicdemo.music.MusicHttpsUtil;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -40,18 +43,28 @@ public class QQMudicManager {
     }
 
     private QQMudicManager() {
+        // https://www.jianshu.com/p/1fea1e7dc465
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(@NotNull String s) {
+                Log.i(TAG, "loggingInterceptor: " + s);
+            }
+        });
         // https://blog.csdn.net/willhanweijia/article/details/69942039
         OkHttpClient mOkHttpClient = new OkHttpClient().newBuilder()
+                .addInterceptor(loggingInterceptor)
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
+                        Log.i(TAG, "hostnameVerifier: hostname=" + hostname + " SSLSession=" + session);
                         return true;
                     }
                 }).build();
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL) // HTTP 403 Forbidden
-                // IllegalArgumentException: Unable to create converter for class java.lang.String
                 .addConverterFactory(GsonConverterFactory.create())
+                // https://www.jianshu.com/p/1fea1e7dc465
+//                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(mOkHttpClient)
                 .build();

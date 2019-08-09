@@ -37,4 +37,6 @@ dependencies {
     def lifecycle_version = "2.0.0"
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
 }
