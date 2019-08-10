@@ -24,6 +24,7 @@ public class QQMudicManager {
     // String url = "http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400003iHc0e2UIgMC.m4a?guid=7249969248&vkey=1B6E68A9D3C7B8150A04A706A030952375F383B4FB99151FE4CB7D3C1EFF497171F3294BC62D5EB34C012AA5552F615A325F3F7756BE7533&uin=0&fromtag=38";
     // String url = "http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400001Q8ojB1EM8mw.m4a?guid=7249969248&vkey=1B6E68A9D3C7B8150A04A706A030952375F383B4FB99151FE4CB7D3C1EFF497171F3294BC62D5EB34C012AA5552F615A325F3F7756BE7533&uin=0&fromtag=38";
     // String url = "http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C40000210iUr2jg9fl.m4a?guid=7249969248&vkey=1B6E68A9D3C7B8150A04A706A030952375F383B4FB99151FE4CB7D3C1EFF497171F3294BC62D5EB34C012AA5552F615A325F3F7756BE7533&uin=0&fromtag=38";
+    // guid 与 vkey 的值在变化，导致链接失效
     // 查询链接
     // https://c.y.qq.com/soso/fcgi-bin/client_search_cp?aggr=1&cr=1&flag_qc=0&p=1&n=2&w=如歌
 

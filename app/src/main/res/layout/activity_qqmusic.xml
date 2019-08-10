@@ -45,6 +45,13 @@
         <!--android:visibility='@{viewModel.isLoaded ? View.VISIBLE:View.GONE}' 测试通过-->
         <!--android:background='@{viewModel.isLoaded ? "00ff00":"ff0000"}' 测试未通过-->
 
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            app:layout_constraintBottom_toTopOf="@id/bt_play" />
+
         <Button
             android:id="@+id/bt_stop"
             android:layout_width="wrap_content"
