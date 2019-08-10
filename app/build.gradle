@@ -55,4 +55,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
+
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }

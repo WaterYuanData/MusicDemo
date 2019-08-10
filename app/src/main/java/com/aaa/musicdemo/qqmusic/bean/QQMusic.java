@@ -29,6 +29,15 @@ public class QQMusic {
         return this.message;
     }
 
+    @Override
+    public String toString() {
+        return "QQMusic{" +
+                "code=" + code +
+                ", data=" + data.toString() +
+                ", message='" + message + '\'' +
+                '}';
+    }
+
     public static class Data {
         private Song song;
 
@@ -38,6 +47,13 @@ public class QQMusic {
 
         public Song getSong() {
             return this.song;
+        }
+
+        @Override
+        public String toString() {
+            return "Data{" +
+                    "song=" + song.toString() +
+                    '}';
         }
     }
 
@@ -51,6 +67,17 @@ public class QQMusic {
         public java.util.List<List> getList() {
             return this.list;
         }
+
+        @Override
+        public String toString() {
+            StringBuffer stringBuffer = new StringBuffer();
+            for (List list1 : list) {
+                stringBuffer.append(list1.toString());
+            }
+            return "Song{" +
+                    "list=" + stringBuffer +
+                    '}';
+        }
     }
 
 
@@ -58,7 +85,7 @@ public class QQMusic {
         private java.util.List<Singer> singer;
         private String songmid;
         private String songname;
-        //        private int switch;
+        // private int switch;
 
         public void setSinger(java.util.List<Singer> singer) {
             this.singer = singer;
@@ -83,6 +110,19 @@ public class QQMusic {
         public String getSongname() {
             return this.songname;
         }
+
+        @Override
+        public String toString() {
+            StringBuffer stringBuffer = new StringBuffer();
+            for (Singer sing : singer) {
+                stringBuffer.append(sing.toString());
+            }
+            return "List{" +
+                    "singer=" + stringBuffer.toString() +
+                    ", songmid='" + songmid + '\'' +
+                    ", songname='" + songname + '\'' +
+                    '}';
+        }
     }
 
     public static class Singer {
@@ -94,6 +134,13 @@ public class QQMusic {
 
         public String getName() {
             return this.name;
+        }
+
+        @Override
+        public String toString() {
+            return "Singer{" +
+                    "name='" + name + '\'' +
+                    '}';
         }
     }
 }

@@ -13,8 +13,6 @@ import com.aaa.musicdemo.App;
 import com.aaa.musicdemo.qqmusic.bean.QQMusic;
 import com.google.gson.Gson;
 
-import java.io.IOException;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -22,13 +20,12 @@ import okhttp3.ResponseBody;
 
 public class QQMusicDataViewModel extends ViewModel {
     private static final String TAG = "MusicDataViewModel";
-    private MutableLiveData<QQMusic> mMutableLiveData = new MutableLiveData();
-    private MutableLiveData<Boolean> mIsLoaded = new MutableLiveData();
-    private MutableLiveData<Boolean> mIsPrepared = new MutableLiveData();
-    private MutableLiveData<Boolean> mCompleted = new MutableLiveData();
-    private Boolean mIsCompleted = false;
-    private MutableLiveData<Integer> mCurrentPosition = new MutableLiveData();
-    private MutableLiveData<Integer> mDuration = new MutableLiveData();
+    private MutableLiveData<QQMusic> mMutableLiveData = new MutableLiveData(); // 查询到的音乐数据
+    private MutableLiveData<Boolean> mIsLoaded = new MutableLiveData(); // 查询是否完成
+    private MutableLiveData<Boolean> mIsPrepared = new MutableLiveData(); // 播放准备工作是否完成
+    private MutableLiveData<Boolean> mCompleted = new MutableLiveData(); // 歌曲是否播放完毕
+    private MutableLiveData<Integer> mCurrentPosition = new MutableLiveData(); // 歌曲进度
+    private MutableLiveData<Integer> mDuration = new MutableLiveData(); // 歌曲时长
     private MediaPlayer mMediaPlayer;
     private Gson mGson = new Gson();
 
@@ -104,7 +101,6 @@ public class QQMusicDataViewModel extends ViewModel {
         mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mIsCompleted = true;
                 mCompleted.postValue(true);
             }
         });
@@ -135,9 +131,8 @@ public class QQMusicDataViewModel extends ViewModel {
                 int duration = mMediaPlayer.getDuration();
                 Log.i(TAG, "onPrepared: duration=" + duration);
                 mDuration.postValue(duration);
-                mIsCompleted = false;
                 // TODO: 2019/8/10
-//                mCompleted.postValue(false); // null 的原因
+//                mCompleted.postValue(false); // null 的原因 postValue为异步执行
                 mCompleted.setValue(false);
                 Log.i(TAG, "onPrepared: null的原因 " + mCompleted.getValue()); // null
                 new Thread(new Runnable() {
@@ -146,18 +141,8 @@ public class QQMusicDataViewModel extends ViewModel {
                         int currentPosition = 0;
                         // TODO: 2019/8/10
                         Log.i(TAG, "run: " + mCompleted.getValue()); // null
+                        // postValue为异步执行导致mCompleted.getValue()为null，引发mCompleted.getValue().booleanValue()空指针异常
                         while (!mCompleted.getValue()) { // 空指针异常
-//                        while (!mIsCompleted) {
-                            try {
-//                                Log.i(TAG, "run: " + mCompleted.getValue()); // 不异常
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            try {
-                                mCurrentPosition.getValue();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
                             currentPosition = mMediaPlayer.getCurrentPosition();
 //                            Log.i(TAG, "run: currentPosition=" + currentPosition);
                             mCurrentPosition.postValue(currentPosition);
@@ -176,7 +161,7 @@ public class QQMusicDataViewModel extends ViewModel {
                 String songmid = null;
                 try {
                     songmid = mMutableLiveData.getValue().getData().getSong().getList().get(0).getSongmid();
-                    Log.d(TAG, "run: " + songmid);
+                    Log.i(TAG, "run: " + songmid);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -193,9 +178,12 @@ public class QQMusicDataViewModel extends ViewModel {
                     mMediaPlayer.setDataSource(url);
                     mIsPrepared.postValue(false);
                     mMediaPlayer.prepare(); // might take long! (for buffering, etc)
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(App.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    // todo 该toast显示不出来？？？
+                    Toast.makeText(App.getInstance(), "出错，请重新播放", Toast.LENGTH_SHORT).show();
+                    // TODO: 2019/8/10
+                    // 失败重试
                 }
             }
         }).start();
@@ -204,5 +192,10 @@ public class QQMusicDataViewModel extends ViewModel {
     public void doPause() {
         mMediaPlayer.stop();
         mMediaPlayer.reset(); // 不然重新设置setDataSource会状态异常
+    }
+
+    public void doSeek(int progress) {
+        Log.i(TAG, "doSeek: progress=" + progress);
+        mMediaPlayer.seekTo(progress);
     }
 }
