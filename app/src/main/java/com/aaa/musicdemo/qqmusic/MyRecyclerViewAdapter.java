@@ -38,7 +38,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(@NonNull MyRecyclerViewHolder holder, int position) {
         try {
             holder.mBinding.tvSong.setText(mData.getValue().getData().getSong().getList().get(position).getSongname());
+            // 只显示每首歌的第一作者
             holder.mBinding.tvSinger.setText(mData.getValue().getData().getSong().getList().get(position).getSinger().get(0).getName());
+            holder.mBinding.tvAlbumName.setText(mData.getValue().getData().getSong().getList().get(position).getAlbumname());
+            holder.mBinding.tvAlbumName.setSelected(true);
         } catch (Exception e) {
             Log.i(TAG, "onBindViewHolder: position=" + position);
             e.printStackTrace();
@@ -49,9 +52,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public int getItemCount() {
         int count = 0;
         try {
-            count = mData.getValue().getData().getSong().getList().size();
-            // TODO: 2019/8/10
-            Log.i(TAG, "MyRecyclerViewAdapter: " + mData.getValue().toString());
+            if (mData.getValue() != null) {
+                count = mData.getValue().getData().getSong().getList().size();
+                // TODO: 2019/8/10
+                Log.i(TAG, "MyRecyclerViewAdapter: " + mData.getValue().toString());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

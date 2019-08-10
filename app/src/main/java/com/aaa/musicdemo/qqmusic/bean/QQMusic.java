@@ -85,7 +85,16 @@ public class QQMusic {
         private java.util.List<Singer> singer;
         private String songmid;
         private String songname;
+        private String albumname;
         // private int switch;
+
+        public String getAlbumname() {
+            return albumname;
+        }
+
+        public void setAlbumname(String albumname) {
+            this.albumname = albumname;
+        }
 
         public void setSinger(java.util.List<Singer> singer) {
             this.singer = singer;
@@ -121,6 +130,7 @@ public class QQMusic {
                     "singer=" + stringBuffer.toString() +
                     ", songmid='" + songmid + '\'' +
                     ", songname='" + songname + '\'' +
+                    ", albumname='" + albumname + '\'' +
                     '}';
         }
     }

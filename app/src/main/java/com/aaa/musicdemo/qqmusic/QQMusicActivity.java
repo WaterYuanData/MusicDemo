@@ -43,16 +43,26 @@ public class QQMusicActivity extends AppCompatActivity {
     }
 
     private void initBinding() {
+        // 读取保存的值
+//        String string = mQQMusicDataViewModel.getSongName().get();
+        Log.i(TAG, "initBinding: 先于xml绑定");
+        String string = mQQMusicDataViewModel.getSongName_().getValue(); // 均可以
+        mBinding.etSearch.setText(string);// IndexOutOfBoundsException: setSpan (4 ... 4) ends beyond length 0
+        mBinding.etSearch.setSelection(string.length()); // 缺少setText会导致索引越界异常的原因是，先执行了此处还没执行xml中的绑定的数据
+        Log.i(TAG, "initBinding: 先于xml绑定");
+
         mBinding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int percent = (int) (progress * 100.0f / mQQMusicDataViewModel.getDuration().getValue());
-                if (seekBar.isPressed()) {
-                    Log.i(TAG, "onProgressChanged: progress=" + progress
-                            + " 百分比=" + percent + "%"
-                            + " seekBar=" + seekBar
-                            + " mBinding.seekBar=" + mBinding.seekBar); // 是同一个实例对象
-                    mQQMusicDataViewModel.doSeek(progress);
+                if (mQQMusicDataViewModel.getDuration() != null && mQQMusicDataViewModel.getDuration().getValue() != null) {
+                    int percent = (int) (progress * 100.0f / mQQMusicDataViewModel.getDuration().getValue());
+                    if (seekBar.isPressed()) {
+                        Log.i(TAG, "onProgressChanged: progress=" + progress
+                                + " 百分比=" + percent + "%"
+                                + " seekBar=" + seekBar
+                                + " mBinding.seekBar=" + mBinding.seekBar); // 是同一个实例对象
+                        mQQMusicDataViewModel.doSeek(progress);
+                    }
                 }
             }
 
@@ -101,6 +111,14 @@ public class QQMusicActivity extends AppCompatActivity {
             public void onChanged(Integer integer) {
                 Integer postion = mQQMusicDataViewModel.getCurrentPosition().getValue();
                 Integer duration = mQQMusicDataViewModel.getDuration().getValue();
+                if (duration == null) {
+                    duration = 0;
+                }
+
+                if (postion > duration) {
+                    // postion=226273493 duration=329305 onChanged: isPressed=false datePos=51:13 dateDur=05:29
+                    postion = 0;
+                }
 
                 mBinding.seekBar.setProgress(postion);
                 mBinding.seekBar.setSecondaryProgress(postion + 1000);
@@ -133,8 +151,8 @@ public class QQMusicActivity extends AppCompatActivity {
         });
     }
 
-    public void doQuery(View view) {
-        mQQMusicDataViewModel.queryQQMusicData(mBinding.etSearch.getText().toString().trim());
+    public void doSearch(View view) {
+        mQQMusicDataViewModel.searchQQMusicData(mBinding.etSearch.getText().toString().trim());
 
         // 隐藏软键盘
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

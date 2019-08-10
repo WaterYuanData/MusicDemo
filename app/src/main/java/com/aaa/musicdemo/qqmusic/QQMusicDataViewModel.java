@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -26,11 +27,44 @@ public class QQMusicDataViewModel extends ViewModel {
     private MutableLiveData<Boolean> mCompleted = new MutableLiveData(); // 歌曲是否播放完毕
     private MutableLiveData<Integer> mCurrentPosition = new MutableLiveData(); // 歌曲进度
     private MutableLiveData<Integer> mDuration = new MutableLiveData(); // 歌曲时长
+    private ObservableField<String> mSongName = new ObservableField(); // 歌曲名 android:text="@{viewModel.songName}"
+    private MutableLiveData<String> mSongName_ = new MutableLiveData(); // 歌曲名 android:text="@{viewModel.songName_}"
     private MediaPlayer mMediaPlayer;
     private Gson mGson = new Gson();
 
     public QQMusicDataViewModel() {
         Log.i(TAG, "QQMusicDataViewModel: init");
+        mSongName.set(SharedPreferenceUtil.getString("search", "如歌"));
+        mSongName_.setValue(SharedPreferenceUtil.getString("search", "如歌"));
+    }
+
+    public MutableLiveData<String> getSongName_() {
+        Log.i(TAG, "getSongName_: xml绑定");
+        return mSongName_;
+    }
+
+    public void setSongName_(MutableLiveData<String> songName_) {
+        mSongName_ = songName_;
+    }
+
+    public void setMutableLiveData(MutableLiveData<QQMusic> mutableLiveData) {
+        mMutableLiveData = mutableLiveData;
+    }
+
+    public MutableLiveData<Boolean> getCompleted() {
+        return mCompleted;
+    }
+
+    public void setCompleted(MutableLiveData<Boolean> completed) {
+        mCompleted = completed;
+    }
+
+    public ObservableField<String> getSongName() {
+        return mSongName;
+    }
+
+    public void setSongName(ObservableField<String> songName) {
+        mSongName = songName;
     }
 
     public MutableLiveData<Integer> getDuration() {
@@ -69,7 +103,10 @@ public class QQMusicDataViewModel extends ViewModel {
         return mMutableLiveData;
     }
 
-    public void queryQQMusicData(String songName) {
+    public void searchQQMusicData(String songName) {
+        SharedPreferenceUtil.putString("search", songName);
+        mSongName.set(songName);
+        mSongName_.setValue(songName);
         mIsLoaded.setValue(false);
         QQMudicManager.getInstance().getMusicData(songName)
                 .subscribeOn(Schedulers.io())
@@ -79,7 +116,7 @@ public class QQMusicDataViewModel extends ViewModel {
                     @Override
                     public void accept(ResponseBody responseBody) throws Exception {
                         String string = responseBody.string();
-                        Log.i(TAG, "accept: responseBody=" + string);
+//                        Log.i(TAG, "accept: responseBody=" + string);
                         string = string.substring("callback(".length(), string.length() - 1);
                         Log.i(TAG, "accept: substring=" + string);
                         QQMusic qqMusic = mGson.fromJson(string, QQMusic.class);
@@ -190,12 +227,17 @@ public class QQMusicDataViewModel extends ViewModel {
     }
 
     public void doPause() {
-        mMediaPlayer.stop();
-        mMediaPlayer.reset(); // 不然重新设置setDataSource会状态异常
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.reset(); // 不然重新设置setDataSource会状态异常
+        }
+        mCurrentPosition.setValue(0);
     }
 
     public void doSeek(int progress) {
         Log.i(TAG, "doSeek: progress=" + progress);
-        mMediaPlayer.seekTo(progress);
+        if (mMediaPlayer != null) {
+            mMediaPlayer.seekTo(progress);
+        }
     }
 }

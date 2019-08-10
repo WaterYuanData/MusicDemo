@@ -9,13 +9,37 @@
             android:id="@+id/tv_song"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="song"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_singer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="singer"
             app:layout_constraintTop_toBottomOf="@id/tv_song" />
+
+        <TextView
+            android:id="@+id/tv_album_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="album_name"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            app:layout_constraintTop_toBottomOf="@id/tv_singer" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_margin="5dp"
+            android:background="#919191"
+            app:layout_constraintTop_toBottomOf="@id/tv_album_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
