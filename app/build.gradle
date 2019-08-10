@@ -10,10 +10,26 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        mySign {
+            keyAlias 'key0'
+            keyPassword '123456'
+            // Keystore file 'D:\MyCode\MyGitHub\MusicDemo\app\myKey.jks' not found for signing config 'mySign'.
+            // storeFile file('myKey.jks')
+            storeFile file('../myKey.jks') // 默认在当前module目录找，“..”返回到上层目录
+            storePassword '123456'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.mySign // 使用与debug相同的签名，可以与debug版相互覆盖安装
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.mySign
         }
     }
     dataBinding {
