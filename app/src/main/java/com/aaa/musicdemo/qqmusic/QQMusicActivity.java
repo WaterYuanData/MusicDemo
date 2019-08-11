@@ -76,11 +76,11 @@ public class QQMusicActivity extends AppCompatActivity {
         });
 
         mBinding.rvMusicInfo.setLayoutManager(new LinearLayoutManager(getApplication(), RecyclerView.VERTICAL, false));
-        mBinding.rvMusicInfo.setAdapter(new MyRecyclerViewAdapter(mQQMusicDataViewModel.getMutableLiveData()));
+        mBinding.rvMusicInfo.setAdapter(new MyRecyclerViewAdapter(mQQMusicDataViewModel));
     }
 
     private void initViewModel() {
-        // 建立Binding与ViewModel的联系
+        // 建立Binding与ViewModel的联系 todo
         mQQMusicDataViewModel.getIsLoaded().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loaded) {
@@ -143,10 +143,13 @@ public class QQMusicActivity extends AppCompatActivity {
             }
         });
 
+        // 建立ViewModel与RecyclerViewAdapter的联系 todo
         mQQMusicDataViewModel.getMutableLiveData().observe(this, new Observer<QQMusic>() {
             @Override
             public void onChanged(QQMusic qqMusic) {
+                Log.i(TAG, "onChanged: 查询结果的数据变化了");
                 mBinding.rvMusicInfo.getAdapter().notifyDataSetChanged();
+                mQQMusicDataViewModel.getSelectedPosition().setValue(0);
             }
         });
     }

@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -26,16 +25,25 @@ public class QQMusicDataViewModel extends ViewModel {
     private MutableLiveData<Boolean> mIsPrepared = new MutableLiveData(); // 播放准备工作是否完成
     private MutableLiveData<Boolean> mCompleted = new MutableLiveData(); // 歌曲是否播放完毕
     private MutableLiveData<Integer> mCurrentPosition = new MutableLiveData(); // 歌曲进度
+    private MutableLiveData<Integer> mSelectedPosition = new MutableLiveData(); // 所选歌曲
     private MutableLiveData<Integer> mDuration = new MutableLiveData(); // 歌曲时长
-    private ObservableField<String> mSongName = new ObservableField(); // 歌曲名 android:text="@{viewModel.songName}"
-    private MutableLiveData<String> mSongName_ = new MutableLiveData(); // 歌曲名 android:text="@{viewModel.songName_}"
+    private MutableLiveData<String> mSongName_ = new MutableLiveData(); // 关键字 android:text="@{viewModel.songName_}"
     private MediaPlayer mMediaPlayer;
     private Gson mGson = new Gson();
 
     public QQMusicDataViewModel() {
         Log.i(TAG, "QQMusicDataViewModel: init");
-        mSongName.set(SharedPreferenceUtil.getString("search", "如歌"));
         mSongName_.setValue(SharedPreferenceUtil.getString("search", "如歌"));
+
+        mSelectedPosition.setValue(0);
+    }
+
+    public MutableLiveData<Integer> getSelectedPosition() {
+        return mSelectedPosition;
+    }
+
+    public void setSelectedPosition(MutableLiveData<Integer> selectedPosition) {
+        mSelectedPosition = selectedPosition;
     }
 
     public MutableLiveData<String> getSongName_() {
@@ -57,14 +65,6 @@ public class QQMusicDataViewModel extends ViewModel {
 
     public void setCompleted(MutableLiveData<Boolean> completed) {
         mCompleted = completed;
-    }
-
-    public ObservableField<String> getSongName() {
-        return mSongName;
-    }
-
-    public void setSongName(ObservableField<String> songName) {
-        mSongName = songName;
     }
 
     public MutableLiveData<Integer> getDuration() {
@@ -105,7 +105,6 @@ public class QQMusicDataViewModel extends ViewModel {
 
     public void searchQQMusicData(String songName) {
         SharedPreferenceUtil.putString("search", songName);
-        mSongName.set(songName);
         mSongName_.setValue(songName);
         mIsLoaded.setValue(false);
         QQMudicManager.getInstance().getMusicData(songName)
@@ -158,6 +157,7 @@ public class QQMusicDataViewModel extends ViewModel {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
                 Log.i(TAG, "onBufferingUpdate: " + percent);
+                // TODO: 2019/8/11 第二条进度条，显示加载进度
             }
         });
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -197,7 +197,7 @@ public class QQMusicDataViewModel extends ViewModel {
             public void run() {
                 String songmid = null;
                 try {
-                    songmid = mMutableLiveData.getValue().getData().getSong().getList().get(0).getSongmid();
+                    songmid = mMutableLiveData.getValue().getData().getSong().getList().get(mSelectedPosition.getValue()).getSongmid();
                     Log.i(TAG, "run: " + songmid);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -208,10 +208,11 @@ public class QQMusicDataViewModel extends ViewModel {
                 try {
                     // String url = "http://sc1.111ttt.cn/2017/1/05/09/298092035545.mp3"; // your URL here
                     // "songmid":"003iHc0e2UIgMC"
-//                    String url = "http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C40000210iUr2jg9fl.m4a?guid=7249969248&vkey=C37544B5C80D97ADDEF2147C64826B7942C0D8E311F975EF9F38C29BCEBAF4DE0CE871907AB36043A637890DFE3C62E4A8BE4CBBDBBD797E&uin=0&fromtag=38";
                     String url = "http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400"
                             + songmid
-                            + ".m4a?guid=353267452&&vkey=C37544B5C80D97ADDEF2147C64826B7942C0D8E311F975EF9F38C29BCEBAF4DE0CE871907AB36043A637890DFE3C62E4A8BE4CBBDBBD797E&uin=0&fromtag=38";
+//                            + ".m4a?guid=353267452&&vkey=C37544B5C80D97ADDEF2147C64826B7942C0D8E311F975EF9F38C29BCEBAF4DE0CE871907AB36043A637890DFE3C62E4A8BE4CBBDBBD797E&uin=0&fromtag=38";
+                            + ".m4a?guid=2066957442&vkey=35A19A5C3C0752EA51DD0E8A6701CD7EA0108EFB59579555E8D0BF25F9A8B73CF7634F741DCEA994B17F073DC684F2C2227A028EEC37C236&uin=0&fromtag=38";
+
                     mMediaPlayer.setDataSource(url);
                     mIsPrepared.postValue(false);
                     mMediaPlayer.prepare(); // might take long! (for buffering, etc)

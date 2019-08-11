@@ -86,7 +86,16 @@ public class QQMusic {
         private String songmid;
         private String songname;
         private String albumname;
+        private int albumid;
         // private int switch;
+
+        public int getAlbumid() {
+            return albumid;
+        }
+
+        public void setAlbumid(int albumid) {
+            this.albumid = albumid;
+        }
 
         public String getAlbumname() {
             return albumname;
@@ -131,6 +140,7 @@ public class QQMusic {
                     ", songmid='" + songmid + '\'' +
                     ", songname='" + songname + '\'' +
                     ", albumname='" + albumname + '\'' +
+                    ", albumid='" + albumid + '\'' +
                     '}';
         }
     }
