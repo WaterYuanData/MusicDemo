@@ -2,44 +2,75 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cl_item_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="120dp"
+        android:theme="@style/MyLayoutSelector">
+
+        <ImageView
+            android:id="@+id/iv_song_img"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@color/colorGray"
+            android:clickable="false"
+            app:layout_constraintHeight_percent="0.9"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.3" />
 
         <TextView
             android:id="@+id/tv_song"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:background="@color/colorTransport"
+            android:clickable="false"
+            android:ellipsize="marquee"
+            android:gravity="center"
             android:hint="song"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:singleLine="true"
+            app:layout_constraintLeft_toRightOf="@id/iv_song_img"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.6" />
 
         <TextView
             android:id="@+id/tv_singer"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:background="@color/colorTransport"
+            android:clickable="false"
+            android:ellipsize="marquee"
+            android:gravity="center"
             android:hint="singer"
-            app:layout_constraintTop_toBottomOf="@id/tv_song" />
+            android:singleLine="true"
+            app:layout_constraintLeft_toRightOf="@id/iv_song_img"
+            app:layout_constraintTop_toBottomOf="@id/tv_song"
+            app:layout_constraintWidth_percent="0.6" />
 
         <TextView
             android:id="@+id/tv_album_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:background="@color/colorTransport"
+            android:clickable="false"
             android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+            android:gravity="center"
             android:hint="album_name"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
-            app:layout_constraintTop_toBottomOf="@id/tv_singer" />
+            app:layout_constraintLeft_toRightOf="@id/iv_song_img"
+            app:layout_constraintTop_toBottomOf="@id/tv_singer"
+            app:layout_constraintWidth_percent="0.6" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_margin="5dp"
-            android:background="#919191"
-            app:layout_constraintTop_toBottomOf="@id/tv_album_name" />
+            android:background="@color/colorGray"
+            app:layout_constraintTop_toBottomOf="@id/iv_song_img" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

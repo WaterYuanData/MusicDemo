@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyLayoutSelector">
+        <!--选中改变背景色-->
+        <item name="android:background">@drawable/my_layout_selector</item>
+    </style>
+
 </resources>

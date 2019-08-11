@@ -74,7 +74,7 @@ public class QQMudicManager {
     public Observable getMusicData(String query) {
         Log.i(TAG, "getMusicData: query=" + query);
         return mRetrofit.create(QQMusicApi.class)
-                .getMusicData(1, 1, 0, 1, 2, query);
+                .getMusicData(1, 1, 0, 1, 10, query);
     }
 }
 

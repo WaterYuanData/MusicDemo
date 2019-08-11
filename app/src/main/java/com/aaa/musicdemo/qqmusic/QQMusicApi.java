@@ -15,7 +15,7 @@ public interface QQMusicApi {
             @Query("cr") int cr,
             @Query("flag_qc") int flag_qc,
             @Query("p") int p,
-            @Query("n") int n,
+            @Query("n") int n, // 搜索结果的数量
             @Query("w") String w
     );
 }
