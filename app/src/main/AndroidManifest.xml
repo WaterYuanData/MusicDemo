@@ -7,6 +7,11 @@
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
+    <!--Bomb http://doc.bmob.cn/data/android/#sdk-->
+    <!--获取GSM（2g）、WCDMA（联通3g）等网络状态的信息  -->
+    <!--缺少该缺陷会报错 The network is not available,please check your network!-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -15,6 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!-- 与bomblib库中的android:name冲突 tools:replace="android:name" -->
+
         <activity android:name=".music.MusicActivity">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN" />-->
@@ -22,6 +29,7 @@
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
+
         <activity android:name=".qqmusic.QQMusicActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +37,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="cn.bmob.v3.util.BmobContentProvider"
+            android:authorities="com.aaa.musicdemo.BmobContentProvider"></provider>
+        <!--android:authorities="你的应用包名.BmobContentProvider">-->
     </application>
 
 </manifest>

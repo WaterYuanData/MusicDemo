@@ -35,6 +35,9 @@ android {
     dataBinding {
         enabled = true
     }
+
+    // http://doc.bmob.cn/data/android/#sdk
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -58,4 +61,7 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
+
+    // http://doc.bmob.cn/data/android/#sdk
+    implementation 'cn.bmob.android:bmob-sdk:3.7.3-rc1'
 }

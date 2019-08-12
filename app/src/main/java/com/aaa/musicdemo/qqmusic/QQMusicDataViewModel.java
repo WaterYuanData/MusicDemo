@@ -211,11 +211,11 @@ public class QQMusicDataViewModel extends ViewModel {
                     String url = "http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400"
                             + songmid
 //                            + ".m4a?guid=353267452&&vkey=C37544B5C80D97ADDEF2147C64826B7942C0D8E311F975EF9F38C29BCEBAF4DE0CE871907AB36043A637890DFE3C62E4A8BE4CBBDBBD797E&uin=0&fromtag=38";
-                            + ".m4a?guid=2066957442&vkey=35A19A5C3C0752EA51DD0E8A6701CD7EA0108EFB59579555E8D0BF25F9A8B73CF7634F741DCEA994B17F073DC684F2C2227A028EEC37C236&uin=0&fromtag=38";
-
+                            + SharedPreferenceUtil.getString("vkey", "");
                     mMediaPlayer.setDataSource(url);
                     mIsPrepared.postValue(false);
-                    mMediaPlayer.prepare(); // might take long! (for buffering, etc)
+//                    mMediaPlayer.prepare(); // might take long! (for buffering, etc)
+                    mMediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
                 } catch (Exception e) {
                     e.printStackTrace();
                     // todo 该toast显示不出来？？？
