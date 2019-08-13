@@ -53,6 +53,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         Log.i(TAG, "onCreateViewHolder: ");
         // TODO: 2019/8/11 如何复用 
         MusicItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.music_item, parent, false);
+        MusicItemBinding binding2 = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.music_item, parent, false);
+        Log.i(TAG, "onCreateViewHolder: binding" + binding + " binding2=" + binding2);
         binding.setViewModel(mViewModel);
         return new MyRecyclerViewHolder(binding);
     }
@@ -79,6 +81,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                         notifyItemChanged(mSelectedPosition.getValue()); // 取消上一个选中的
                         mSelectedPosition.setValue(position);
                         notifyItemChanged(mSelectedPosition.getValue()); // 选中当前选中的
+
+                        // 点击item就播放
+                        mViewModel.doPlay();
                     }
                 }
             });
@@ -107,6 +112,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             e.printStackTrace();
         }
         Log.i(TAG, "getItemCount: " + count); // todo 为啥会调用多次
+        Log.i(TAG, "getItemCount: " + Log.getStackTraceString(new Throwable()));
         return count;
     }
 

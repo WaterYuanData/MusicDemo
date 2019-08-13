@@ -2,6 +2,7 @@ package com.aaa.musicdemo.qqmusic;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,9 +11,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.aaa.musicdemo.App;
+import com.aaa.musicdemo.metadata.MetaDataManager;
 import com.aaa.musicdemo.qqmusic.bean.QQMusic;
 import com.google.gson.Gson;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -103,26 +106,42 @@ public class QQMusicDataViewModel extends ViewModel {
         return mMutableLiveData;
     }
 
-    public void searchQQMusicData(String songName) {
+    public void searchQQMusicData(final String songName) {
+        Log.i(TAG, "searchQQMusicData: ");
         SharedPreferenceUtil.putString("search", songName);
         mSongName_.setValue(songName);
         mIsLoaded.setValue(false);
-        QQMudicManager.getInstance().getMusicData(songName)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                // IllegalArgumentException: Unable to create converter for class java.lang.String
-                .subscribe(new Consumer<ResponseBody>() {
-                    @Override
-                    public void accept(ResponseBody responseBody) throws Exception {
-                        String string = responseBody.string();
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                QQMudicManager.getInstance().getMusicData(songName)
+                        .subscribeOn(Schedulers.io()) // 未生效的原因？在设置subscribeOn()前getMusicData()已执行
+                        .observeOn(AndroidSchedulers.mainThread())
+                        // IllegalArgumentException: Unable to create converter for class java.lang.String
+                        .subscribe(new Consumer<ResponseBody>() {
+                            @Override
+                            public void accept(ResponseBody responseBody) throws Exception {
+                                Log.i(TAG, "getMusicData: " + Thread.currentThread().getName()
+                                        + " getPriority=" + Thread.currentThread().getPriority()); // main 5
+                                String string = responseBody.string();
 //                        Log.i(TAG, "accept: responseBody=" + string);
-                        string = string.substring("callback(".length(), string.length() - 1);
-                        Log.i(TAG, "accept: substring=" + string);
-                        QQMusic qqMusic = mGson.fromJson(string, QQMusic.class);
-                        mMutableLiveData.setValue(qqMusic);
-                        mIsLoaded.setValue(true);
-                    }
-                });
+                                string = string.substring("callback(".length(), string.length() - 1);
+                                Log.i(TAG, "accept: substring=" + string);
+                                QQMusic qqMusic = mGson.fromJson(string, QQMusic.class);
+                                mMutableLiveData.setValue(qqMusic);
+                                mIsLoaded.setValue(true);
+                            }
+                        });
+
+
+                Log.i(TAG, "run: getName: " + Thread.currentThread().getName()
+                        + " getPriority=" + Thread.currentThread().getPriority()); // Thread-3 5
+                MetaDataManager.Holder.sMetaDataManager.getMetaData();
+            }
+        }).start();
     }
 
     public void doPlay() {

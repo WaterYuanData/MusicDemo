@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!--形状rectangle矩形-->
+    <!--https://www.jianshu.com/p/50f76f07c709-->
+    <!--背景色-->
+    <solid android:color="@color/colorWhite" />
+    <!--边框 宽度 颜色-->
+    <stroke
+        android:width="4dp"
+        android:color="@color/colorGreen" />
+    <!--圆角-->
+    <corners android:radius="4dp" />
+</shape>

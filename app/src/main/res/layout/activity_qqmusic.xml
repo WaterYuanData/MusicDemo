@@ -21,8 +21,11 @@
             android:id="@+id/et_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/edit_text_view_background"
             android:drawableLeft="@android:drawable/ic_menu_search"
             android:hint="请输入要查询的歌曲名"
+            android:padding="2dp"
             android:singleLine="true"
             android:text="@{viewModel.songName_}"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -49,6 +52,7 @@
             app:layout_constraintLeft_toLeftOf="parent" />
         <!--android:visibility='@{viewModel.isLoaded ? View.VISIBLE:View.GONE}' 测试通过-->
         <!--android:background='@{viewModel.isLoaded ? "00ff00":"ff0000"}' 测试未通过-->
+        <!--android:background="@{isError ? @color/red : @color/white}"-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_music_info"

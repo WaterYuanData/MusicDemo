@@ -155,6 +155,7 @@ public class QQMusicActivity extends AppCompatActivity {
     }
 
     public void doSearch(View view) {
+        Log.i(TAG, "doSearch: ");
         mQQMusicDataViewModel.searchQQMusicData(mBinding.etSearch.getText().toString().trim());
 
         // 隐藏软键盘

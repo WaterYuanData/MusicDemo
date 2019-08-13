@@ -17,7 +17,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QQMudicManager {
-    private static final String TAG = "QQMudicApi";
+    private static final String TAG = "MetaDataManager";
     private static final String BASE_URL = "https://c.y.qq.com";
     // 播放链接
     // "songmid":"003iHc0e2UIgMC"
@@ -70,6 +70,8 @@ public class QQMudicManager {
     }
 
     public Observable getMusicData(String query) {
+        Log.i(TAG, "getMusicData: " + Thread.currentThread().getName()
+                + " getPriority=" + Thread.currentThread().getPriority()); // main 5
         Log.i(TAG, "getMusicData: query=" + query);
         return mRetrofit.create(QQMusicApi.class)
                 .getMusicData(1, 1, 0, 1, 10, query);
