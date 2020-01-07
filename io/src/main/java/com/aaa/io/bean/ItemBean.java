@@ -1,6 +1,6 @@
-package com.aaa.io;
+package com.aaa.io.bean;
 
-public class Items {
+public class ItemBean {
     private int subcode;
 
     private String songmid;
@@ -39,5 +39,15 @@ public class Items {
 
     public String getVkey() {
         return this.vkey;
+    }
+
+    @Override
+    public String toString() {
+        return "Items{" +
+                "subcode=" + subcode +
+                ", songmid='" + songmid + '\'' +
+                ", filename='" + filename + '\'' +
+                ", vkey='" + vkey + '\'' +
+                '}';
     }
 }

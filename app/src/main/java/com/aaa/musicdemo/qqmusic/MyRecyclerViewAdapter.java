@@ -112,7 +112,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             e.printStackTrace();
         }
         Log.i(TAG, "getItemCount: " + count); // todo 为啥会调用多次
-        Log.i(TAG, "getItemCount: " + Log.getStackTraceString(new Throwable()));
+//        Log.i(TAG, "getItemCount: " + Log.getStackTraceString(new Throwable()));
         return count;
     }
 

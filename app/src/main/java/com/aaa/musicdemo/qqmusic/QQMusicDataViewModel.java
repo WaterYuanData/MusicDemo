@@ -124,10 +124,9 @@ public class QQMusicDataViewModel extends ViewModel {
                         .subscribe(new Consumer<ResponseBody>() {
                             @Override
                             public void accept(ResponseBody responseBody) throws Exception {
-                                Log.i(TAG, "getMusicData: " + Thread.currentThread().getName()
-                                        + " getPriority=" + Thread.currentThread().getPriority()); // main 5
+                                Log.i(TAG, "getMusicData: " + Thread.currentThread());
                                 String string = responseBody.string();
-//                        Log.i(TAG, "accept: responseBody=" + string);
+                                Log.i(TAG, "accept: responseBody=" + string);
                                 string = string.substring("callback(".length(), string.length() - 1);
                                 Log.i(TAG, "accept: substring=" + string);
                                 QQMusic qqMusic = mGson.fromJson(string, QQMusic.class);
@@ -137,8 +136,7 @@ public class QQMusicDataViewModel extends ViewModel {
                         });
 
 
-                Log.i(TAG, "run: getName: " + Thread.currentThread().getName()
-                        + " getPriority=" + Thread.currentThread().getPriority()); // Thread-3 5
+                Log.i(TAG, "run: getName: " + Thread.currentThread());
                 MetaDataManager.Holder.sMetaDataManager.getMetaData();
             }
         }).start();
@@ -231,6 +229,10 @@ public class QQMusicDataViewModel extends ViewModel {
                             + songmid
 //                            + ".m4a?guid=353267452&&vkey=C37544B5C80D97ADDEF2147C64826B7942C0D8E311F975EF9F38C29BCEBAF4DE0CE871907AB36043A637890DFE3C62E4A8BE4CBBDBBD797E&uin=0&fromtag=38";
                             + SharedPreferenceUtil.getString("vkey", "");
+                    Log.e(TAG, "run: *** " + url);
+                    url = "http://ws.stream.qqmusic.qq.com/C400003lghpv0jfFXG.m4a?fromtag=0&guid=126548448&vkey=D661E5DF19B8FEB2FBFC554276746AC608AE98B0F30595B3B3BAD5C1C89ECCDD7BE599E306F786621856D22D6BD6B96F5DD344CF3814DB71";
+                    url = "http://ws.stream.qqmusic.qq.com/lm005d9e8facb91a60f36de44b85ec7a6893.mp3";
+                    Log.e(TAG, "run: *** " + url);
                     mMediaPlayer.setDataSource(url);
                     mIsPrepared.postValue(false);
 //                    mMediaPlayer.prepare(); // might take long! (for buffering, etc)

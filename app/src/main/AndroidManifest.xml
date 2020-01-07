@@ -23,24 +23,23 @@
         <!-- 与bomblib库中的android:name冲突 tools:replace="android:name" -->
 
         <activity android:name=".music.MusicActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
             <!--不注释会影响调试-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
         <activity android:name=".qqmusic.QQMusicActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <provider
-            android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.aaa.musicdemo.BmobContentProvider"></provider>
+        <!--<provider-->
+        <!--android:name="cn.bmob.v3.util.BmobContentProvider"-->
+        <!--android:authorities="com.aaa.musicdemo.BmobContentProvider"></provider>-->
         <!--android:authorities="你的应用包名.BmobContentProvider">-->
     </application>
 

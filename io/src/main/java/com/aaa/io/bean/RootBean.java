@@ -1,13 +1,13 @@
-package com.aaa.io;
+package com.aaa.io.bean;
 
-public class Root {
+public class RootBean {
     private int code;
 
     private int cid;
 
     private String userip;
 
-    private Data data;
+    private DataBean data;
 
     public void setCode(int code) {
         this.code = code;
@@ -33,11 +33,21 @@ public class Root {
         return this.userip;
     }
 
-    public void setData(Data data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
-    public Data getData() {
+    public DataBean getData() {
         return this.data;
+    }
+
+    @Override
+    public String toString() {
+        return "Root{" +
+                "code=" + code +
+                ", cid=" + cid +
+                ", userip='" + userip + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

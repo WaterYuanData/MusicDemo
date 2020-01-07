@@ -65,7 +65,8 @@ public class MusicDataViewModel extends ViewModel {
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e(TAG, "doPlay: " + e.getMessage());
-                    Toast.makeText(App.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    子线程不能弹土司
+//                    Toast.makeText(App.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }).start();
